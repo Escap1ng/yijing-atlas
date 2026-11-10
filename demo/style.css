@@ -158,6 +158,7 @@ output {
   margin: 9px 0;
   font-size: 14px;
   color: var(--muted);
+  font-variant-numeric: tabular-nums;
 }
 
 .stats b {
@@ -172,6 +173,7 @@ output {
 }
 
 .rowbtns button {
+  flex: 1 1 0;
   font-size: 13px;
   padding: 6px 10px;
 }
