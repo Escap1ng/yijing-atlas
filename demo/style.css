@@ -580,6 +580,107 @@ h2 {
   margin-bottom: 16px;
 }
 
+.method {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 30px 32px 110px;
+}
+
+.method-body {
+  max-width: 880px;
+}
+
+.method-head h2 {
+  margin: 0 0 10px;
+  font-size: 22px;
+  letter-spacing: .12em;
+}
+
+.method .lead {
+  margin: 0;
+  font-size: 16.5px;
+  line-height: 1.95;
+  color: var(--prose);
+}
+
+.method h3 {
+  margin: 30px 0 12px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid var(--line);
+  font-size: 18px;
+  letter-spacing: .08em;
+}
+
+.method h4 {
+  margin: 20px 0 8px;
+  font-size: 16px;
+  letter-spacing: .06em;
+}
+
+.method p {
+  margin: 0 0 10px;
+  font-size: 16px;
+  line-height: 1.95;
+  color: var(--prose);
+}
+
+.method-terms {
+  display: grid;
+  grid-template-columns: 6em minmax(0, 1fr);
+  gap: 9px 16px;
+  margin: 0;
+  font-size: 15.5px;
+  line-height: 1.9;
+  color: var(--prose);
+}
+
+.method-terms dt { color: var(--accent); }
+.method-terms dd { margin: 0; }
+
+.method-steps {
+  margin: 0;
+  padding-left: 1.5em;
+  font-size: 16px;
+  line-height: 1.95;
+  color: var(--prose);
+}
+
+.method-steps li { margin-bottom: 9px; }
+.method-steps b { color: var(--ink); font-weight: 600; }
+
+.method-table {
+  width: 100%;
+  margin: 14px 0 12px;
+  border-collapse: collapse;
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+}
+
+.method-table th,
+.method-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+}
+
+.method-table th {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  color: var(--ink);
+}
+
+.method-table td { color: var(--prose); }
+
+.method .method-note {
+  margin-top: 24px;
+  padding-top: 13px;
+  border-top: 1px solid var(--line);
+  font-size: 14px;
+  line-height: 1.85;
+  color: var(--muted);
+}
+
 .canon {
   margin: 0 0 10px;
   font-size: 17px;
@@ -858,6 +959,11 @@ button.ghost { border-color: var(--line); color: var(--muted); }
   .toolbar button { min-width: 0; width: 100%; }
   .hint { display: none; }
   .canon-section { padding: 24px 18px 120px; }
+  .method { padding: 24px 18px 120px; }
+  .method-terms { grid-template-columns: 5em minmax(0, 1fr); gap: 8px 12px; }
+  .method-table { font-size: 14px; }
+  .method-table th,
+  .method-table td { padding: 7px 6px; }
 }
 
 @media (max-width: 480px) {

@@ -383,10 +383,11 @@
       Array.prototype.forEach.call(tabs, function (b) {
         b.classList.toggle('active', b === btn);
       });
-      var stars = btn.getAttribute('data-view') === 'stars';
-      $('view-shiyi').hidden = stars;
-      $('view-stars').hidden = !stars;
-      $('toolbar').hidden = stars;
+      var view = btn.getAttribute('data-view');
+      $('view-shiyi').hidden = view !== 'shiyi';
+      $('view-method').hidden = view !== 'method';
+      $('view-stars').hidden = view !== 'stars';
+      $('toolbar').hidden = view !== 'shiyi';
       window.scrollTo(0, 0);
     });
   });
