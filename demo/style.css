@@ -76,6 +76,7 @@ h1 {
   color: var(--muted);
   font-size: 16px;
   letter-spacing: .16em;
+  transition: color .18s ease, border-color .18s ease;
 }
 
 .tabs button.active {
@@ -220,12 +221,13 @@ main {
   letter-spacing: .12em;
   color: var(--muted);
   padding-bottom: 12px;
+  font-variant-numeric: tabular-nums;
 }
 
 .board {
   border: 1px solid var(--line);
   background: var(--paper-2);
-  min-height: 330px;
+  min-height: 300px;
   padding: 18px;
   display: flex;
   align-items: stretch;
@@ -237,7 +239,7 @@ main {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 14px;
 }
 
 .bundle[hidden] { display: none; }
@@ -260,71 +262,131 @@ main {
 .pile {
   border: 1px solid var(--line);
   padding: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  display: grid;
+  grid-template-rows: auto 1fr 27px;
+  gap: 8px;
   min-width: 0;
 }
 
 .hang {
   border: 1px dashed var(--line);
-  padding: 10px 6px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  align-items: center;
+  padding: 10px 8px;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 8px;
+}
+
+.pile .rods,
+.hang .rods {
+  align-self: center;
+  min-height: 0;
+}
+
+.hang .rods {
+  justify-content: center;
 }
 
 .pile-head {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
+  gap: 8px;
   font-size: 14px;
   color: var(--muted);
   letter-spacing: .08em;
+}
+
+.hang .pile-head {
+  justify-content: center;
+  letter-spacing: .04em;
 }
 
 .pile-head b {
   font-size: 19px;
   color: var(--ink);
   font-weight: 600;
+  font-variant-numeric: tabular-nums;
 }
 
 .rods {
   display: flex;
   flex-wrap: wrap;
-  align-content: flex-start;
-  gap: 4px 4px;
+  align-content: center;
+  gap: 6px 10px;
   min-height: 96px;
 }
 
 .bundle .rods {
   justify-content: center;
-  gap: 3px;
+  gap: 4px 3px;
   max-width: 380px;
+  min-height: 0;
 }
 
-.rods.grouped .rod:nth-child(4n) {
-  margin-right: 8px;
+.rodgroup {
+  display: flex;
+  gap: 3px;
 }
 
 .rod {
   width: 4px;
   height: 30px;
-  background: var(--ink);
+  background: linear-gradient(180deg, #3b342c 0%, #221e19 70%, #1c1814 100%);
   border-radius: 2px;
   flex: 0 0 auto;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, .32), 0 1px 2px rgba(38, 34, 30, .16);
 }
 
-.rod.accent { background: var(--accent); }
+.rod.accent {
+  background: linear-gradient(180deg, #b2594a 0%, var(--accent) 70%, #7f2f24 100%);
+}
+
+.rods.entering .rod {
+  animation: rodIn .36s cubic-bezier(.2, .7, .25, 1) both;
+  animation-delay: calc(var(--i) * 4ms);
+}
+
+.hang .rods.entering .rod {
+  animation-name: rodDrop;
+  animation-delay: 0ms;
+}
+
+.rods.tapping .rod.accent {
+  animation: tap .42s ease;
+}
+
+@keyframes rodIn {
+  from { opacity: 0; transform: translateY(-7px) scaleY(.86); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes rodDrop {
+  from { opacity: 0; transform: translateY(-14px); }
+  60% { transform: translateY(2px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes tap {
+  0% { transform: none; }
+  40% { transform: translateY(-3px); }
+  100% { transform: none; }
+}
 
 .chip {
-  align-self: flex-start;
+  justify-self: start;
+  align-self: end;
   font-size: 12.5px;
   color: var(--accent);
   border: 1px solid var(--accent);
   padding: 1px 7px;
   border-radius: 2px;
+  font-variant-numeric: tabular-nums;
+  animation: fadeIn .3s ease both;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(3px); }
+  to { opacity: 1; transform: none; }
 }
 
 .formula {
@@ -405,6 +467,17 @@ h2 {
   line-height: 1.95;
 }
 
+.step-text.swap,
+.math.swap,
+.check.swap {
+  animation: swapIn .26s ease both;
+}
+
+@keyframes swapIn {
+  from { opacity: 0; transform: translateY(3px); }
+  to { opacity: 1; transform: none; }
+}
+
 .math {
   margin: 12px 0 0;
   font-family: "Cambria", "Georgia", "SFMono-Regular", Consolas, monospace;
@@ -439,6 +512,24 @@ h2 {
   height: 12px;
   background: var(--ink);
   flex: 1;
+}
+
+.line-row.new .bar {
+  transform-origin: left center;
+  animation: barIn .4s cubic-bezier(.2, .7, .25, 1) both;
+}
+
+.line-row.new .bar:nth-child(2) {
+  animation-delay: .07s;
+}
+
+.line-row.new .line-label {
+  animation: fadeIn .3s ease .12s both;
+}
+
+@keyframes barIn {
+  from { opacity: .25; transform: scaleX(.04); }
+  to { opacity: 1; transform: none; }
 }
 
 .line-row.old .bar { background: var(--accent); }
@@ -675,11 +766,17 @@ button {
   border-radius: 2px;
   cursor: pointer;
   letter-spacing: .04em;
+  transition: background-color .18s ease, border-color .18s ease, color .18s ease;
 }
 
 button:hover { background: rgba(38, 34, 30, .06); }
 button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 button:disabled { opacity: .35; cursor: default; }
+button:active:not(:disabled) { transform: translateY(1px); }
+
+.toolbar button {
+  min-width: 108px;
+}
 
 button.primary { background: var(--ink); color: var(--paper); }
 button.primary:hover { background: #3a342d; }
@@ -703,8 +800,11 @@ button.ghost { border-color: var(--line); color: var(--muted); }
   main { grid-template-columns: 1fr; }
   .stage { border-right: 0; border-bottom: 1px solid var(--line); padding: 18px; }
   .panel { padding: 18px; }
-  .piles { grid-template-columns: minmax(0, 1fr) 54px minmax(0, 1fr); }
-  .board { min-height: 280px; padding: 12px; }
+  main { padding-bottom: 128px; }
+  .piles { grid-template-columns: minmax(0, 1fr) 58px minmax(0, 1fr); }
+  .hang { padding: 10px 4px; }
+  .hang .pile-head { gap: 4px; }
+  .board { min-height: 260px; padding: 12px; }
   .line-shape { width: 140px; }
   .step-text { font-size: 17px; }
   .rod { width: 3px; }
@@ -714,7 +814,25 @@ button.ghost { border-color: var(--line); color: var(--muted); }
   .stars-layout { grid-template-columns: 1fr; }
   .stars-side { border-left: 0; border-top: 1px solid var(--line); padding: 16px 0 0; }
   .chart { max-width: 100%; }
-  .toolbar { padding: 12px 18px; }
+  .toolbar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 10px 18px;
+  }
+  .toolbar button { min-width: 0; width: 100%; }
   .hint { display: none; }
   .canon-section { padding: 24px 18px 120px; }
+}
+
+@media (max-width: 480px) {
+  .bundle .rods { gap: 4px 2px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: .001ms !important;
+  }
 }

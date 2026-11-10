@@ -24,14 +24,28 @@
     btnLine: $('btnLine'), btnReset: $('btnReset')
   };
 
-  function rods(node, n, accentFrom, grouped) {
+  function rodEl(i, accentFrom) {
+    var d = document.createElement('i');
+    d.className = 'rod' + (accentFrom != null && i >= accentFrom ? ' accent' : '');
+    d.style.setProperty('--i', i);
+    return d;
+  }
+
+  function rods(node, n, accentFrom, grouped, entry, accentAnim) {
     node.innerHTML = '';
-    node.classList.toggle('grouped', !!grouped);
+    node.classList.toggle('entering', !!entry);
+    node.classList.toggle('tapping', !!accentAnim);
     var frag = document.createDocumentFragment();
-    for (var i = 0; i < n; i++) {
-      var d = document.createElement('i');
-      d.className = 'rod' + (accentFrom != null && i >= accentFrom ? ' accent' : '');
-      frag.appendChild(d);
+    var i = 0;
+    if (grouped) {
+      while (i < n) {
+        var g = document.createElement('span');
+        g.className = 'rodgroup';
+        for (var k = 0; k < 4 && i < n; k++, i++) g.appendChild(rodEl(i, accentFrom));
+        frag.appendChild(g);
+      }
+    } else {
+      for (; i < n; i++) frag.appendChild(rodEl(i, accentFrom));
     }
     node.appendChild(frag);
   }
@@ -68,13 +82,17 @@
     return row;
   }
 
+  var renderedLines = 0;
   function renderHex() {
     el.hex.innerHTML = '';
     var frag = document.createDocumentFragment();
     for (var i = 5; i >= 0; i--) {
-      frag.appendChild(lineRow(session.lines[i], i));
+      var row = lineRow(session.lines[i], i);
+      if (session.lines[i] != null && i >= renderedLines) row.className += ' new';
+      frag.appendChild(row);
     }
     el.hex.appendChild(frag);
+    renderedLines = session.lines.length;
 
     var n = session.lines.length;
     el.hexState.textContent = n === 6 ? '六爻已成' : '已得 ' + n + ' 爻';
@@ -196,17 +214,22 @@
     el.textLines.appendChild(frag);
   }
 
+  var prevPhase = null;
   function renderBoard() {
     var showPiles = ['split', 'hung', 'countedL', 'countedR'].indexOf(session.phase) !== -1;
     el.bundle.hidden = showPiles;
     el.piles.hidden = !showPiles;
 
     if (!showPiles) {
-      rods(el.rodsAll, session.n);
+      var collect = prevPhase == null || prevPhase === 'split' || prevPhase === 'hung' ||
+        prevPhase === 'countedL' || prevPhase === 'countedR' ||
+        (prevPhase === 'lineDone' && session.phase === 'ready');
+      rods(el.rodsAll, session.n, null, false, collect);
       var label = $('bundleLabel');
       label.textContent = session.phase === 'complete'
         ? '末变余策 ' + session.n
         : (session.n === 49 ? '四十九策' : '余 ' + session.n + ' 策');
+      prevPhase = session.phase;
       return;
     }
 
@@ -214,12 +237,15 @@
     el.numR.textContent = session.R;
     var countedL = session.phase === 'countedL' || session.phase === 'countedR';
     var countedR = session.phase === 'countedR';
-    rods(el.rodsL, session.L, countedL ? session.L - session.rL : null, true);
-    rods(el.rodsR, session.R, countedR ? session.R - session.rR : null, true);
+    var dealing = session.phase === 'split';
+    rods(el.rodsL, session.L, countedL ? session.L - session.rL : null, true,
+      dealing, session.phase === 'countedL');
+    rods(el.rodsR, session.R, countedR ? session.R - session.rR : null, true,
+      dealing, session.phase === 'countedR');
 
     var hung = session.phase === 'split' ? 0 : 1;
     el.numH.textContent = hung ? '1' : '—';
-    rods(el.rodsH, hung);
+    rods(el.rodsH, hung, null, false, session.phase === 'hung');
 
     if (session.phase === 'countedL' || session.phase === 'countedR') {
       el.chipL.hidden = false;
@@ -233,6 +259,15 @@
     } else {
       el.chipR.hidden = true;
     }
+    prevPhase = session.phase;
+  }
+
+  function setText(node, text) {
+    if (node.textContent === text) return;
+    node.textContent = text;
+    node.classList.remove('swap');
+    void node.offsetWidth;
+    node.classList.add('swap');
   }
 
   function renderStep() {
@@ -240,22 +275,22 @@
     if (!ev) {
       el.stepTitle.textContent = '起筮';
       el.stepXiang.textContent = '虚一';
-      el.stepText.textContent = '四十九策在案。点击「下一步」，从分二开始。';
-      el.stepMath.textContent = '';
+      setText(el.stepText, '四十九策在案。点击「下一步」，从分二开始。');
+      setText(el.stepMath, '');
       el.formula.textContent = '四十九策在案，虚一不用。';
       el.check.hidden = true;
       return;
     }
     el.stepTitle.textContent = ev.title;
     el.stepXiang.textContent = ev.xiang || '';
-    el.stepText.textContent = ev.text;
-    el.stepMath.textContent = ev.math || '';
+    setText(el.stepText, ev.text);
+    setText(el.stepMath, ev.math || '');
     if (ev.math) el.formula.textContent = ev.math;
 
     if (ev.check) {
       el.check.hidden = false;
       el.check.className = 'check' + (ev.check.ok ? '' : ' bad');
-      el.check.textContent = (ev.check.ok ? '合：' : '不合：') + ev.check.msg;
+      setText(el.check, (ev.check.ok ? '合：' : '不合：') + ev.check.msg);
     } else {
       el.check.hidden = true;
     }
@@ -329,6 +364,8 @@
 
   el.btnReset.addEventListener('click', function () {
     session = S.createSession();
+    prevPhase = null;
+    renderedLines = 0;
     render();
   });
 

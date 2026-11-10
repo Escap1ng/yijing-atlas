@@ -65,14 +65,14 @@ await sleep(900);
 await shot('shot-initial.png');
 
 await click('btnStep', 5);
-await sleep(150);
+await sleep(750);
 await shot('shot-step.png');
 console.log('step check:', await evalJs("document.getElementById('check').textContent"));
 console.log('step formula:', await evalJs("document.getElementById('formula').textContent"));
 
 await click('btnReset');
 await click('btnLine', 6);
-await sleep(200);
+await sleep(750);
 await evalJs("document.getElementById('textBlock').scrollIntoView({block:'start'})");
 await sleep(120);
 await shot('shot-canon.png');
