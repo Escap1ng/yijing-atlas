@@ -1,0 +1,7 @@
+demo/.edge-cdp/
+demo/.edge-tmp/
+research/.tmp-*/
+node_modules/
+*.tar.gz
+.DS_Store
+Thumbs.db

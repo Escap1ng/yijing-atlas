@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>揲蓍 · 四十九策</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="masthead">
+  <div>
+    <h1>揲蓍</h1>
+    <p class="sub">大衍之数五十，其用四十有九。分二 · 挂一 · 揲四 · 归奇。</p>
+  </div>
+  <p class="rule">三变成爻，十八变成卦</p>
+</header>
+
+<nav class="tabs" id="tabs">
+  <button data-view="shiyi" class="active">揲蓍</button>
+  <button data-view="stars">星阵</button>
+</nav>
+
+<div id="view-shiyi">
+<main>
+  <section class="stage">
+    <div class="statusbar">
+      <span id="status">第 1 爻 · 第 1 变</span>
+      <span id="count">余 49 策</span>
+    </div>
+
+    <div class="board">
+      <div class="bundle" id="bundle">
+        <div class="rods" id="rodsAll"></div>
+        <span class="bundle-label" id="bundleLabel">四十九策</span>
+      </div>
+
+      <div class="piles" id="piles" hidden>
+        <div class="pile">
+          <div class="pile-head"><span>天 · 左</span><b id="numL">—</b></div>
+          <div class="rods" id="rodsL"></div>
+          <span class="chip" id="chipL" hidden></span>
+        </div>
+        <div class="hang">
+          <div class="pile-head"><span>挂</span><b id="numH">—</b></div>
+          <div class="rods" id="rodsH"></div>
+        </div>
+        <div class="pile">
+          <div class="pile-head"><span>地 · 右</span><b id="numR">—</b></div>
+          <div class="rods" id="rodsR"></div>
+          <span class="chip" id="chipR" hidden></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="formula" id="formula">四十九策在案，虚一不用。</div>
+    <div class="check" id="check" hidden></div>
+    <p class="note">本 demo 按「分二均匀」实算：老阳 21.1% · 老阴 5.2% · 少阳 28.9% · 少阴 44.8%。挂扐理想值为 18.75 / 6.25 / 31.25 / 43.75，差异来自分堆边界。</p>
+  </section>
+
+  <aside class="panel">
+    <section class="block">
+      <div class="block-head">
+        <h2 id="stepTitle">起筮</h2>
+        <span class="xiang" id="stepXiang"></span>
+      </div>
+      <p class="step-text" id="stepText">四十九策在案。点击「下一步」，从分二开始。</p>
+      <p class="math" id="stepMath"></p>
+    </section>
+
+    <section class="block">
+      <div class="block-head"><h2>卦体</h2><span class="xiang" id="hexState">六爻未成</span></div>
+      <div class="hex" id="hex"></div>
+      <p class="hexmeta" id="hexMeta">自下而上，初爻在先。</p>
+    </section>
+
+    <section class="block">
+      <div class="block-head"><h2>记录</h2><span class="xiang" id="stepCount">0 步</span></div>
+      <ol class="log" id="log"></ol>
+    </section>
+  </aside>
+</main>
+
+<section class="canon-section" id="textBlock" hidden>
+  <div class="block-head"><h2>经文</h2><span class="xiang" id="textName"></span></div>
+  <p class="canon"><span class="lab">卦辞</span><span id="textGuaci"></span></p>
+  <p class="baihua"><span class="lab">白话</span><span id="textBaihua"></span></p>
+  <details class="wangbi-gua" id="textZhu" hidden>
+    <summary>王弼注（四库本，无句读）</summary>
+    <p id="textZhuBody"></p>
+  </details>
+  <p class="canon"><span class="lab">大象</span><span id="textXiang"></span></p>
+  <p class="baihua"><span class="lab">白话</span><span id="textXiangBaihua"></span></p>
+  <p class="canon zhi" id="textZhi" hidden></p>
+  <ol class="line-list" id="textLines"></ol>
+  <details class="tuan">
+    <summary>彖传</summary>
+    <p id="textTuan"></p>
+  </details>
+  <details class="glossary">
+    <summary>术语注</summary>
+    <dl>
+      <dt>元亨利贞</dt><dd>元，始；亨，通；利，宜；贞，正而固。四字连读，前人多解为「大亨以正」，断句与训释历来不一。</dd>
+      <dt>吉凶</dt><dd>吉为得、为顺，凶为失、为逆。《易》多以得失言吉凶，不作道德判决。</dd>
+      <dt>悔吝</dt><dd>悔，知过能改；吝，滞碍难行。悔轻而吝重。</dd>
+      <dt>无咎</dt><dd>无灾无过。善补过，则无咎。</dd>
+      <dt>厉</dt><dd>危。处危而知惧，可免于咎。</dd>
+      <dt>孚</dt><dd>诚信、符信。另有解作「俘」者，属一家之言。</dd>
+      <dt>攸往</dt><dd>所往、前往之处。</dd>
+      <dt>利涉大川</dt><dd>宜于涉险远行。大川喻难。</dd>
+      <dt>用九用六</dt><dd>唯乾、坤二卦有，为六爻皆变时的总断。</dd>
+      <dt>老变少不变</dt><dd>九、六为老，是变爻；七、八为少，是静爻。本工具据此生成本卦与之卦。</dd>
+    </dl>
+  </details>
+  <p class="note">经文为通行本原文；白话取自公开数据（MIT），为现代译文；王弼注据四库本，音义未收，异体字转简。异文与旧注未校。</p>
+</section>
+</div>
+
+<section class="stars" id="view-stars" hidden>
+  <div class="stars-head">
+    <h2>星阵</h2>
+    <p>周天 365¼ 度、二十八宿距度合计 365¼ 度、卦气一卦 6 日 7/80 日合计 365¼ 日。三者同轴，1 古度约当日行 1 日。</p>
+  </div>
+  <div class="stars-layout">
+    <div class="chart" id="chart"></div>
+    <aside class="stars-side">
+      <div class="control">
+        <label for="phi">节气环旋转 φ</label>
+        <div class="row">
+          <input id="phi" type="range" min="0" max="365.25" step="0.25" value="96.25">
+          <output id="phiOut">96.25</output>
+        </div>
+      </div>
+      <div class="stats">
+        <p>当前 RMS <b id="rms">—</b> 古度</p>
+        <p>等宽基线 <b>3.77</b> 古度</p>
+        <p>最优 φ 76.5，RMS 4.74</p>
+      </div>
+      <div class="rowbtns">
+        <button id="btnBest">跳到最优 φ</button>
+        <button id="btnAnchor">冬至锚点</button>
+      </div>
+      <p class="hint2">节气是等分，宿度是实测的不等分。拖动可见：最优旋转仍差于等宽基线，二者没有隐藏对齐。</p>
+      <div class="legend">
+        <span><i class="sw" style="background:#9b3b2e"></i>十二辟卦</span>
+        <span><i class="sw" style="background:#c9a227"></i>四正卦（节气）</span>
+        <span><i class="sw" style="background:#8a9a8b"></i>二十八宿</span>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<footer class="toolbar" id="toolbar">
+  <button id="btnStep" class="primary">下一步</button>
+  <button id="btnChange">走完一变</button>
+  <button id="btnLine">走完一爻</button>
+  <button id="btnReset" class="ghost">重新起卦</button>
+  <span class="hint">分堆随机，余数耦合；<b>老变少不变</b>。</span>
+</footer>
+
+<script src="core.js"></script>
+<script src="hextext.js"></script>
+<script src="stars.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
