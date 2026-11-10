@@ -4,7 +4,7 @@
 
 在线版：<https://escap1ng.github.io/yijing-atlas/>
 
-![筮仪台](demo/shot-initial.png)
+![筮仪台](demo/shot-initial.png?v=2)
 
 ## 功能
 
@@ -14,9 +14,11 @@
 - **筮法**：卜与筮、大衍之数的由来，四营、三变、十八变的分步说明，附三变余策与爻值对照。
 - **星阵**：二十八宿、二十四气、六十卦气三环同轴；拖动节气环可做拟合实验，实时显示 RMS 与等宽基线。
 
-![经文与今解](demo/shot-canon.png)
+![筮法](demo/shot-method.png?v=2)
 
-![星阵](demo/shot-stars.png)
+![经文与今解](demo/shot-canon.png?v=2)
+
+![星阵](demo/shot-stars.png?v=2)
 
 ## 运行
 

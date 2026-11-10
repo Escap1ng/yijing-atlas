@@ -64,6 +64,12 @@ await sleep(900);
 
 await shot('shot-initial.png');
 
+await evalJs("document.querySelector('#tabs button[data-view=method]').click()");
+await sleep(350);
+await shot('shot-method.png');
+await evalJs("document.querySelector('#tabs button[data-view=shiyi]').click()");
+await sleep(250);
+
 await click('btnStep', 5);
 await sleep(750);
 await shot('shot-step.png');
