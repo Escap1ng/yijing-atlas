@@ -18,6 +18,7 @@
     textBlock: $('textBlock'), textName: $('textName'), textGuaci: $('textGuaci'),
     textBaihua: $('textBaihua'), textZhu: $('textZhu'), textZhuBody: $('textZhuBody'),
     textXiang: $('textXiang'), textXiangBaihua: $('textXiangBaihua'), textZhi: $('textZhi'),
+    textModern: $('textModern'), textModernBody: $('textModernBody'),
     textLines: $('textLines'), textTuan: $('textTuan'),
     log: $('log'), stepCount: $('stepCount'),
     btnStep: $('btnStep'), btnChange: $('btnChange'),
@@ -152,6 +153,13 @@
     }
     el.textXiang.textContent = data.daxiang;
     el.textXiangBaihua.textContent = data.daxiangBaihua || '';
+    var modern = window.MODERN && window.MODERN[ben.id];
+    if (modern) {
+      el.textModern.hidden = false;
+      el.textModernBody.textContent = modern;
+    } else {
+      el.textModern.hidden = true;
+    }
     el.textTuan.textContent = data.tuan;
 
     if (zhi) {
